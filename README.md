@@ -13,8 +13,7 @@ Soy un estudiante de ingenieria en desarrollo de software, no sé demaiado pero 
 ## 📊 Mis estadísticas de GitHub
 ![Estadísticas de GitHub](https://github-readme-stats.vercel.app/api?username=Sunwearshade&show_icons=true&theme=dark)
 ![Lenguajes utilizados](https://github-readme-stats.vercel.app/api/top-langs/?username=Sunwearshade&layout=compact&theme=dark)
-![Commits](https://github.com/Sunwearshade/Sunwearshade/blob/main/commit_activity.svg)
-![Actividad semanal](https://github.com/Sunwearshade/Sunwearshade/blob/main/activity.svg)
+
 
 
 

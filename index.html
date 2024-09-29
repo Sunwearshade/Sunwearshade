@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráfico de Actividad de GitHub</title>
+    <!-- Importar las librerías necesarias -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chartist/0.11.0/chartist.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartist/0.11.0/chartist.min.js"></script>
+    <style>
+        /* Estilos básicos para el gráfico */
+        .ct-chart {
+            position: relative;
+            height: 380px;
+        }
+        .chart_placeholder {
+            display: none; /* Ocultar el placeholder si se está mostrando el gráfico */
+        }
+        .loader {
+            display: none; /* Ocultar el loader por defecto */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Gráfico de Actividad de GitHub</h1>
+    <div class="ct-chart"></div>
+    <div class="loader">Cargando...</div>
+
+    <form id="user-form">
+        <input type="text" id="username" placeholder="Ingresa tu usuario de GitHub" required>
+        <button type="submit" id="submit-button">Generar Gráfico</button>
+    </form>
+
+    <script>
+        // Aquí pega el código JavaScript que compartiste
+        const elements = {
+            toggleBtn: document.querySelector('.toggle-btn'),
+            bgColor: document.querySelector('.bg-color'),
+            loader: document.querySelector('.loader'),
+            placeholder: document.querySelector('.chart_placeholder'),
+            copyContainer: document.querySelector('.copy_container'),
+            textArea: document.querySelector('.text'),
+            copyText: document.querySelector('.copy_text'),
+            submitButton: document.getElementById('submit-button'),
+            username: document.getElementById('username')
+        };
+
+        const inputElements = {
+            bgInput: document.getElementById('bgColor'),
+            lineInput: document.getElementById('line'),
+            ltgInput: document.getElementById('color'),
+            pointInput: document.getElementById('point')
+        };
+
+        const valueToCopy = {
+            username: '',
+            bgColor: '#ffcfe9',
+            color: '#9e4c98',
+            line: '#9e4c98',
+            point: '#403d3d'
+        };
+
+        const setLoader = () => {
+            elements.loader.classList.add('active');
+        };
+        const removeLoader = () => {
+            elements.loader.classList.remove('active');
+        };
+        const removePlaceholder = () => {
+            elements.placeholder.classList.remove('active');
+            elements.copyContainer.style.marginTop = '2rem';
+        };
+
+        const generateLink = () => {
+            let link = `[![Ashutosh's github activity graph](https://github-readme-activity-graph.vercel.app/graph?username=${valueToCopy.username}&bg_color=${valueToCopy.bgColor.slice(1)}&color=${valueToCopy.color.slice(1)}&line=${valueToCopy.line.slice(1)}&point=${valueToCopy.point.slice(1)}&area=true&hide_border=true)](https://github.com/ashutosh00710/github-readme-activity-graph)`;
+            elements.textArea.value = link;
+            return link;
+        };
+
+        const getGraph = (username) => {
+            const options = {
+                height: 380,
+                axisY: {
+                    title: 'Contributions',
+                    onlyInteger: true,
+                    offset: 70,
+                },
+                axisX: {
+                    title: 'Days',
+                    offset: 50,
+                },
+                showArea: true,
+                fullWidth: true,
+            };
+
+            axios({
+                url: `https://github-readme-activity-graph.vercel.app/data?username=${username}`,
+                method: 'GET'
+            })
+            .then((contributionData) => {
+                const days = contributionData.data.contributions;
+                const data = {
+                    labels: days.map((day) => day.date),
+                    series: [{ value: days.map((day) => day.contributionCount) }]
+                };
+
+                new Chartist.Line('.ct-chart', data, options);
+                removeLoader();
+                removePlaceholder();
+                generateLink();
+            })
+            .catch((err) => {
+                console.error(err);
+                removeLoader();
+                alert('¡Lo sentimos! Algo salió mal.');
+            });
+        };
+
+        const onSubmit = (event) => {
+            event.preventDefault();
+            const username = elements.username.value;
+            if (username.length > 0) {
+                valueToCopy.username = username;
+                setLoader();
+                getGraph(username);
+            } else {
+                alert('Ingresa tu nombre de usuario');
+                return;
+            }
+        };
+
+        elements.submitButton.addEventListener('click', onSubmit);
+    </script>
+</body>
+</html>

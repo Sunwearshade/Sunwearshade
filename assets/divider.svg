@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="24" viewBox="0 0 1200 24">
+  <line x1="0" y1="12" x2="1200" y2="12" stroke="#222" stroke-width="1"/>
+  <g stroke="#444">
+    <path d="M0 12v-4 M150 12v-4 M300 12v-4 M450 12v-4 M600 12v-6 M750 12v-4 M900 12v-4 M1050 12v-4 M1200 12v-4"/>
+  </g>
+  <rect x="598" y="10" width="4" height="4" fill="#2d72d2"/>
+</svg>
